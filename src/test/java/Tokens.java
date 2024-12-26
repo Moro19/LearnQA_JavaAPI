@@ -1,6 +1,8 @@
 import io.restassured.response.Response;
+import org.apache.commons.lang3.Validate;
 import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Tokens {
     String baseURI = "https://playground.learnqa.ru/ajax/api";
@@ -21,9 +23,8 @@ public class Tokens {
                 .queryParam("token", token)
                 .when()
                 .get("/longtime_job")
-                //  .then()
-                // .assertThat().body(containsString("Job is NOT ready"));
                 .andReturn();
+
         String jsonResponsestatus = responseSecond.path("status");
         System.out.println(jsonResponsestatus);
 
@@ -39,11 +40,14 @@ public class Tokens {
                 .queryParam("token", token)
                 .when()
                 .get("/longtime_job");
-        //.then()
-        // .assertThat().body(containsString("Job is ready")).body(is("result"));
+
 
         String newStatus = responseThird.path("status");
         String result = responseThird.path("result");
+
+        Validate.notNull(result);
+        assertEquals("Job is ready", newStatus);
+
         System.out.println(newStatus);
         System.out.println(result);
 
