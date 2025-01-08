@@ -22,6 +22,14 @@ public class ApiCoreRequests {
                 .andReturn();
     }
 
+    @Step("Make GET-request ")
+    public Response makeSimpleGetRequest(String url) {
+        return given()
+                .filter(new AllureRestAssured())
+                .get(url)
+                .andReturn();
+    }
+
     @Step("Make GET-request with auth cookie")
     public Response makeGetRequestWithCookie(String url, String cookie) {
         return given()
