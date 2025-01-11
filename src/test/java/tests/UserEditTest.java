@@ -1,5 +1,9 @@
 package tests;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
@@ -12,6 +16,9 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("USER Cases")
+@Story("EDIT USER")
+
 public class UserEditTest extends BaseTestCase {
 
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
@@ -19,6 +26,7 @@ public class UserEditTest extends BaseTestCase {
     String otherUserId = "2";
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("Edit user")
     public void testEditJustCreatedUser() {
 //GENERATE
@@ -39,18 +47,19 @@ public class UserEditTest extends BaseTestCase {
         editData.put("firstName", newName);
 
         Response responseEditUser = apiCoreRequests.makePutRequest(
-                "https://playground.learnqa.ru/api/user/" + userId,
+                "https://playground.learnqa.ru/api_dev/user/" + userId,
                 header, cookie,
                 editData);
 //GET
         Response responseUserData = apiCoreRequests.makeGetRequest(
-                "https://playground.learnqa.ru/api/user/" + userId,
+                "https://playground.learnqa.ru/api_dev/user/" + userId,
                 header, cookie);
 
         Assertions.assertJsonByName(responseUserData, "firstName", newName);
     }
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("Edit user without auth")
     public void testEditUserNotAuthorized() {
         String newName = "ChangedName";
@@ -58,7 +67,7 @@ public class UserEditTest extends BaseTestCase {
         editData.put("lastName", newName);
 
         Response responseEditUser = apiCoreRequests.makePutRequestWithoutTokenAndCookie(
-                "https://playground.learnqa.ru/api/user/" + otherUserId,
+                "https://playground.learnqa.ru/api_dev/user/" + otherUserId,
                 editData);
 
         Assertions.assertResponseCodeEquals(responseEditUser, 400);
@@ -67,6 +76,7 @@ public class UserEditTest extends BaseTestCase {
 
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("Edit user auth other user")
     public void testEditUserAuthorizedOther() {
 
@@ -83,7 +93,7 @@ public class UserEditTest extends BaseTestCase {
         editData.put("firstName", newName);
 
         Response responseEditUser = apiCoreRequests.makePutRequest(
-                "https://playground.learnqa.ru/api/user/" + otherUserId,
+                "https://playground.learnqa.ru/api_dev/user/" + otherUserId,
                 header, cookie,
                 editData);
 
@@ -92,6 +102,7 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("Edit user not valid email")
     public void testEditUserEmail() {
 
@@ -108,7 +119,7 @@ public class UserEditTest extends BaseTestCase {
         editData.put("email", newEmail);
 
         Response responseEditUser = apiCoreRequests.makePutRequest(
-                "https://playground.learnqa.ru/api/user/" + userId,
+                "https://playground.learnqa.ru/api_dev/user/" + userId,
                 header, cookie,
                 editData);
 
@@ -117,6 +128,7 @@ public class UserEditTest extends BaseTestCase {
     }
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("Edit user with short firstname (1 symbol)")
     public void testEditUserFirstName() {
 
@@ -133,7 +145,7 @@ public class UserEditTest extends BaseTestCase {
         editData.put("email", newFirstName);
 
         Response responseEditUser = apiCoreRequests.makePutRequest(
-                "https://playground.learnqa.ru/api/user/" + userId,
+                "https://playground.learnqa.ru/api_dev/user/" + userId,
                 header, cookie,
                 editData);
 

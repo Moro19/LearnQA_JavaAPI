@@ -1,5 +1,9 @@
 package tests;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import lib.ApiCoreRequests;
 import lib.Assertions;
@@ -11,6 +15,9 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+@Epic("USER Cases")
+@Story("DELETE USER")
+
 public class UserDeleteTest extends BaseTestCase {
 
     private final ApiCoreRequests apiCoreRequests = new ApiCoreRequests();
@@ -18,6 +25,7 @@ public class UserDeleteTest extends BaseTestCase {
     int otherUserId = 3;
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("Delete user by id")
 
     public void testDeleteUserFail() {
@@ -32,7 +40,7 @@ public class UserDeleteTest extends BaseTestCase {
         userId = this.getIntFromJson(responseGetAuth, "user_id");
 
         Response responseDelete = apiCoreRequests.deleteRequest(
-                "https://playground.learnqa.ru/api/user/" + userId,
+                "https://playground.learnqa.ru/api_dev/user/" + userId,
                 header, cookie
         );
 
@@ -42,6 +50,7 @@ public class UserDeleteTest extends BaseTestCase {
 
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("Delete user with check")
     public void testDeleteUserSuccess() {
         Map<String, String> userData = DataGenerator.getRegistrationData();
@@ -53,12 +62,12 @@ public class UserDeleteTest extends BaseTestCase {
         userId = this.getIntFromJson(responseGetAuth, "user_id");
 
         apiCoreRequests.deleteRequest(
-                "https://playground.learnqa.ru/api/user/" + userId,
+                "https://playground.learnqa.ru/api_dev/user/" + userId,
                 header, cookie
         );
 
         Response responseCheckDelete = apiCoreRequests.makeGetRequest(
-                "https://playground.learnqa.ru/api/user/" + userId,
+                "https://playground.learnqa.ru/api_dev/user/" + userId,
                 header, cookie
         );
 
@@ -67,6 +76,7 @@ public class UserDeleteTest extends BaseTestCase {
     }
 
     @Test
+    @Severity(SeverityLevel.NORMAL)
     @DisplayName("Delete user auth other user")
     public void testDeleteOtherUser() {
         Map<String, String> userData = DataGenerator.getRegistrationData();
@@ -76,7 +86,7 @@ public class UserDeleteTest extends BaseTestCase {
         String header = this.getHeader(responseGetAuth, "x-csrf-token");
 
         Response responseDeleteOtherUser = apiCoreRequests.deleteRequest(
-                "https://playground.learnqa.ru/api/user/" + otherUserId,
+                "https://playground.learnqa.ru/api_dev/user/" + otherUserId,
                 header, cookie
         );
 
