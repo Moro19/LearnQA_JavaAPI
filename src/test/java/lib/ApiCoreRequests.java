@@ -66,6 +66,7 @@ public class ApiCoreRequests {
                 .post("https://playground.learnqa.ru/api/user/")
                 .jsonPath();
     }
+
     @Step("Login user")
     public Response loginUser(Map<String, String> data) {
         return makePosttRequest("https://playground.learnqa.ru/api/user/login", data);
@@ -99,6 +100,16 @@ public class ApiCoreRequests {
         authData.put("email", data.get("email"));
         authData.put("password", data.get("password"));
         return loginUser(authData);
+    }
+
+    @Step("Make DELETE-request with token and cookie")
+    public Response deleteRequest(String url, String token, String cookie) {
+        return given()
+                .filter(new AllureRestAssured())
+                .header(new Header("x-csrf-token", token))
+                .cookie("auth_sid", cookie)
+                .delete(url)
+                .andReturn();
     }
 
 }
