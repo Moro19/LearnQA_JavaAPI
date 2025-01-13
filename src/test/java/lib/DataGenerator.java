@@ -31,10 +31,6 @@ public class DataGenerator {
         return data;
     }
 
-    public static String getNameWithDetectedLength(int length) {
-        Faker faker = new Faker(new Locale("en-GB"));
-        return faker.lorem().fixedString(length);
-    }
 
     public static Map<String, String> getRegistrationData(Map<String, String> nonDefaultValues) {
         Map<String, String> defaultValues = getRegistrationData();
@@ -51,6 +47,10 @@ public class DataGenerator {
         return userData;
     }
 
+    public static String getNameWithDetectedLength(int length) {
+        Faker faker = new Faker(new Locale("en-GB"));
+        return faker.lorem().fixedString(length);
+    }
     public static Map<String, String> fillDataWithoutOneField(String field) {
         Map<String, String> defaultValues = getRegistrationData();
 
